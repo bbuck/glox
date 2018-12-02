@@ -9,6 +9,8 @@ const (
 	StringLiteral LiteralType = iota
 	NumberLiteral
 	KeywordLiteral
+	BooleanLiteral
+	NilLiteral
 )
 
 // Literal represents a value found literally in the code.

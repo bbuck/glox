@@ -1,24 +1,25 @@
-expression = literal
-           | unary
-           | binary
-           | grouping
-           ;
+expression     = equality
+               ;
 
-literal    = NUMBER
-           | STRING
-           | "true"
-           | "false"
-           | "nil"
-           ;
+equality       = comparison, { ( "!=" | "==" ), comparison }
+               ;
 
-grouping   = "(", expression, ")"
-           ;
+comparison     = addition, { ( ">" | ">=" | "<" | "<=" ), addition }
+               ;
 
-unary      = ( "-" | "!" ), expression
-           ;
+addition       = multiplication, { ( "*" | "/" ), multiplication }
+               ;
 
-binary     = expression, operator, expression
-           ;
+multiplication = unary, { ( "*" | "/" ), unary }
+               ;
 
-operator   = "==" | "!= | "<" | "<=" | ">" | ">="
-           | "+"  | "-" | "*" | "/"  ;
+unary          = ( "-" | "!" ), unary
+               | primary
+               ;
+
+primary        = NUMBER
+               | STRING
+               | "true"
+               | "false"
+               | "nil"
+               ;

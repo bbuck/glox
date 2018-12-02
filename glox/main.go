@@ -7,6 +7,8 @@ import (
 	"os"
 
 	"github.com/bbuck/glox/scanner"
+	"github.com/bbuck/glox/tree/parser"
+	"github.com/bbuck/glox/tree/printer"
 )
 
 func main() {
@@ -56,9 +58,13 @@ func runPrompt() error {
 func run(contents string) error {
 	scanner := scanner.New(contents)
 	scanner.ScanTokens()
-	for _, tok := range scanner.Tokens() {
-		fmt.Println(tok)
+	p := parser.New(scanner.Tokens())
+	ex := p.Parse()
+	if ex == nil {
+		return nil
 	}
+
+	fmt.Println(printer.Print(ex))
 
 	return nil
 }
