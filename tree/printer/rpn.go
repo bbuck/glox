@@ -45,6 +45,12 @@ func (p *rpnPrinter) VisitGrouping(g *expr.Grouping) {
 	g.Expression.Accept(p)
 }
 
+func (p *rpnPrinter) VisitSequenced(s *expr.Sequenced) {
+	s.Left.Accept(p)
+	p.buf.WriteString(" -> ")
+	s.Right.Accept(p)
+}
+
 func (p *rpnPrinter) parenthesize(name string, es ...expr.Expr) {
 	for _, e := range es {
 		e.Accept(p)

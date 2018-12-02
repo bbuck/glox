@@ -1,4 +1,7 @@
-expression     = equality
+expression     = sequenced
+               ;
+
+sequenced      = equality, { ",", equality }
                ;
 
 equality       = comparison, { ( "!=" | "==" ), comparison }

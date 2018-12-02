@@ -5,17 +5,23 @@ import (
 	"github.com/bbuck/glox/tree/expr"
 )
 
+// P encapsulates the parsers current state allowing further calls to parse
+// to maintain positonal information within the token list.
 type P struct {
 	tokens  []*token.T
 	current int
 }
 
+// New constructs a new parser with the token list and returns it ready for
+// use.
 func New(toks []*token.T) *P {
 	return &P{
 		tokens: toks,
 	}
 }
 
+// Parse returns the top-most expression in the syntax tree parsed from the
+// token list. If a parse error occurred this will return nil instead.
 func (p *P) Parse() expr.Expr {
 	if ex, err := p.expression(); err == nil {
 		return ex
@@ -26,7 +32,24 @@ func (p *P) Parse() expr.Expr {
 }
 
 func (p *P) expression() (expr.Expr, error) {
-	return p.equality()
+	return p.sequenced()
+}
+
+func (p *P) sequenced() (expr.Expr, error) {
+	ex, err := p.equality()
+	if err != nil {
+		return nil, err
+	}
+
+	for p.match(token.Comma) {
+		right, err := p.equality()
+		if err != nil {
+			return nil, err
+		}
+		ex = expr.NewSequenced(ex, right)
+	}
+
+	return ex, nil
 }
 
 func (p *P) equality() (expr.Expr, error) {

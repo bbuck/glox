@@ -7,4 +7,5 @@ type Visitor interface {
 	VisitLiteral(*Literal)
 	VisitGrouping(*Grouping)
 	VisitUnary(*Unary)
+	VisitSequenced(*Sequenced)
 }

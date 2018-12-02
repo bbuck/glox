@@ -43,6 +43,12 @@ func (p *astPrinter) VisitGrouping(g *expr.Grouping) {
 	p.parenthesize("group", g.Expression)
 }
 
+func (p *astPrinter) VisitSequenced(s *expr.Sequenced) {
+	s.Left.Accept(p)
+	p.buf.WriteString(" -> ")
+	s.Right.Accept(p)
+}
+
 func (p *astPrinter) parenthesize(name string, es ...expr.Expr) {
 	p.buf.WriteRune('(')
 	p.buf.WriteString(name)
