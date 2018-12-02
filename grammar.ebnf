@@ -1,7 +1,10 @@
 expression     = sequenced
                ;
 
-sequenced      = equality, { ",", equality }
+sequenced      = ternary, { ",", ternary }
+               ;
+
+ternary        = equality, { '?', expression, ':', expression }
                ;
 
 equality       = comparison, { ( "!=" | "==" ), comparison }

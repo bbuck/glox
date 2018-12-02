@@ -33,6 +33,7 @@ func New(source string) *S {
 		Source: source,
 		runes:  []rune(source),
 		tokens: make([]*token.T, 0),
+		line:   1,
 	}
 }
 
@@ -103,6 +104,10 @@ func (s *S) scanToken() {
 		s.addNoValueToken(token.Semicolon)
 	case '*':
 		s.addNoValueToken(token.Star)
+	case '?':
+		s.addNoValueToken(token.QuestionMark)
+	case ':':
+		s.addNoValueToken(token.Colon)
 	case '!':
 		s.scanEqualToken(token.BangEqual, token.Bang)
 	case '=':

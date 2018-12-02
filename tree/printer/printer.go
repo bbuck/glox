@@ -49,6 +49,10 @@ func (p *astPrinter) VisitSequenced(s *expr.Sequenced) {
 	s.Right.Accept(p)
 }
 
+func (p *astPrinter) VisitTernary(t *expr.Ternary) {
+	p.parenthesize("if", t.Condition, t.Positive, t.Negative)
+}
+
 func (p *astPrinter) parenthesize(name string, es ...expr.Expr) {
 	p.buf.WriteRune('(')
 	p.buf.WriteString(name)

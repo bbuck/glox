@@ -8,4 +8,5 @@ type Visitor interface {
 	VisitGrouping(*Grouping)
 	VisitUnary(*Unary)
 	VisitSequenced(*Sequenced)
+	VisitTernary(*Ternary)
 }

@@ -18,6 +18,8 @@ const (
 	Semicolon
 	Slash
 	Star
+	QuestionMark
+	Colon
 
 	// One or two character tokens
 	Bang
@@ -34,7 +36,7 @@ const (
 	String
 	Number
 
-	// Keywords
+	// Kenywords
 	And
 	Class
 	Else
@@ -81,6 +83,10 @@ func (t Type) String() string {
 		return "Slash"
 	case Star:
 		return "Star"
+	case QuestionMark:
+		return "QuestionMark"
+	case Colon:
+		return "Colon"
 	case Bang:
 		return "Bang"
 	case BangEqual:

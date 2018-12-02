@@ -8,7 +8,7 @@ type Sequenced struct {
 	Right Expr
 }
 
-// NewSequence builds a new Sequenced expression from the left and
+// NewSequenced builds a new Sequenced expression from the left and
 // right expressions provided.
 func NewSequenced(left, right Expr) *Sequenced {
 	return &Sequenced{

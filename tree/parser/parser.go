@@ -36,17 +36,43 @@ func (p *P) expression() (expr.Expr, error) {
 }
 
 func (p *P) sequenced() (expr.Expr, error) {
-	ex, err := p.equality()
+	ex, err := p.ternary()
 	if err != nil {
 		return nil, err
 	}
 
 	for p.match(token.Comma) {
-		right, err := p.equality()
+		right, err := p.ternary()
 		if err != nil {
 			return nil, err
 		}
 		ex = expr.NewSequenced(ex, right)
+	}
+
+	return ex, nil
+}
+
+func (p *P) ternary() (expr.Expr, error) {
+	ex, err := p.equality()
+	if err != nil {
+		return nil, err
+	}
+
+	if p.match(token.QuestionMark) {
+		pos, err := p.expression()
+		if err != nil {
+			return nil, err
+		}
+
+		_, err = p.consume(token.Colon, "Expected ':' separating true/false branch")
+		if err != nil {
+			return nil, err
+		}
+		neg, err := p.expression()
+		if err != nil {
+			return nil, err
+		}
+		ex = expr.NewTernary(ex, pos, neg)
 	}
 
 	return ex, nil

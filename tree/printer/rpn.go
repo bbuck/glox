@@ -25,11 +25,11 @@ func PrintRPN(e expr.Expr) string {
 }
 
 func (p *rpnPrinter) VisitBinary(b *expr.Binary) {
-	p.parenthesize(b.Operator.Lexeme, b.Left, b.Right)
+	p.notate(b.Operator.Lexeme, b.Left, b.Right)
 }
 
 func (p *rpnPrinter) VisitUnary(u *expr.Unary) {
-	p.parenthesize(u.Operator.Lexeme, u.Right)
+	p.notate(u.Operator.Lexeme, u.Right)
 }
 
 func (p *rpnPrinter) VisitLiteral(l *expr.Literal) {
@@ -51,7 +51,15 @@ func (p *rpnPrinter) VisitSequenced(s *expr.Sequenced) {
 	s.Right.Accept(p)
 }
 
-func (p *rpnPrinter) parenthesize(name string, es ...expr.Expr) {
+func (p *rpnPrinter) VisitTernary(t *expr.Ternary) {
+	p.notate("?", t.Condition)
+	p.buf.WriteRune(' ')
+	p.notate(":", t.Positive)
+	p.buf.WriteRune(' ')
+	p.notate(";", t.Negative)
+}
+
+func (p *rpnPrinter) notate(name string, es ...expr.Expr) {
 	for _, e := range es {
 		e.Accept(p)
 		p.buf.WriteRune(' ')
